@@ -1,0 +1,20 @@
+databases:
+  - name: hshidara
+    databaseName: hshidara
+    user: hshidara
+
+services:
+  - type: web
+    name: hshidara
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hshidara
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
